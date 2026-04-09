@@ -30,7 +30,7 @@ Currently, only the AS7343 and AS7331 are supported.  I will add the AS7341 at s
 
 
 ## COM port monitor
-Sensor readings will be sent to the COM port, typically via USB. The output will look somethinglike this.
+Sensor readings will be sent to the COM port, typically via USB. The output will look something like this.
 ```
 Visible     UV       IR
     4045    0.68     516
