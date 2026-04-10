@@ -88,3 +88,11 @@ In the GCode running the grblHAL based motion controller, you will use M62 and M
 ||||
 | M62 P2 | set document pin | turn Aux 2 on | Send document header |
 | M63 P2 | reset document pin | turn Aux 2 off | Send document footer |
+
+## Using screw terminals vs pin headers 
+On the RP23U5XBB, there are 2 ways to the connect to the PicoBooster.
+### Using pin headers
+The pin headers use normal signal logic - 0 is off, 1 is on.  Thus, you use M62 for on and M63 for off.  
+### Using screw terminals
+You will need to set the relay voltage to 5V via a jumper.  Use the SIG screw terminal for the signal and a GND terminal (Axis B GND is convenient). The logic is inverted so in your GCode,
+use M63 for on, M62 for off.  You will need to set the outputs to off (M62) at the start of your GCode program (in the prolog section).
