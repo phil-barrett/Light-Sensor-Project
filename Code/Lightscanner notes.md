@@ -1,5 +1,5 @@
 # Light scanner notes
-Current Version: 0.7
+Current Version: 0.72
 
 ## LCD Display
 Requires a 128x64 monochrome display with an I2C interface. These are plentiful and inexpensive. Typically called 1.3" OLED LCD or similar.  Also available in 0.9" and 1.5" sizes.
