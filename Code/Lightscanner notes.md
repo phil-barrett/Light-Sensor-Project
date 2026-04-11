@@ -61,8 +61,8 @@ Usage:
     i[+-]  Toggle IR setting
     a      Set all settings
     t[+-]  Triggered mode on/off
-    r[rmv] r - rotate 180, m - mirror, v - mirror and flip vertical
-           no argument - restore to default rotation
+    r[rmv] display rotation. no argument - restore to default rotation
+           r - rotate 180, m - mirror, v - mirror and flip vertical
     v      display version number
 ```
 The output (LCD and COM) will be adjusted based on selected settings.
