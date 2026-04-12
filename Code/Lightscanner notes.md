@@ -87,23 +87,61 @@ u-
 ```
 
 ### GCode triggering
-In the GCode running the grblHAL based motion controller, you will use M62 and M63 codes to turn on or off the trigger pins. The trigger actions are as follows:
+GCode files programs can be used to drive a motion platform which has the sensor module. The motion controller needs to have 3 digital outputs which the light scanner program uses to trigger sensor sampling and aid in formatting the output. In the GCode running the grblHAL based motion controller, you will use M64 and M65 codes to turn on or off the trigger pins. The trigger actions are as follows:
 
 | MCode | Explanation | grblHAL behavior | Action |
 |-----|-----|------|------|
-| M62 P0 | reset sample pin | turn Aux 0 on | Send sample |
-| M63 P0 | reset sample pin | turn Aux 0 off | nothing |
+| M64 P0 | reset sample pin | turn Aux 0 on | Send sample |
+| M65 P0 | reset sample pin | turn Aux 0 off | nothing |
 ||||
-| M62 P1 | set line pin | turn Aux 1 on | nothing |
-| M63 P1 | reset line pin | turn Aux 1 off | Send newline (\n) |
+| M64 P1 | set line pin | turn Aux 1 on | nothing |
+| M65 P1 | reset line pin | turn Aux 1 off | Send newline (\n) |
 ||||
-| M62 P2 | set document pin | turn Aux 2 on | Send document header |
-| M63 P2 | reset document pin | turn Aux 2 off | Send document footer |
+| M64 P2 | set document pin | turn Aux 2 on | Send document header |
+| M65 P2 | reset document pin | turn Aux 2 off | Send document footer |
 
 ### Using screw terminals vs pin headers 
 On the RP23U5XBB, there are 2 ways to the connect to the PicoBooster.
 #### Using pin headers
-The pin headers use normal signal logic - 0 is off, 1 is on.  Thus, you use M62 for on and M63 for off.  
+The pin headers use normal signal logic - 0 is off, 1 is on.  Thus, you use M64 for on and M65 for off.  
 #### Using screw terminals
 You will need to set the relay voltage to 5V via a jumper.  Use the SIG screw terminal for the signal and a GND terminal (Axis B GND is convenient). The logic is inverted so in your GCode,
-use M63 for on, M62 for off.  You will need to set the outputs to off (M63) at the start of your GCode program (in the prolog section).
+use M65 for on, M64 for off.  You will need to set the outputs to off (M65) at the start of your GCode program (in the prolog section).
+
+### Constructing GCode files
+GCode programs are simply text documents that the motion controller will run.
+
+For each sample location, the GCode program needs to move the X/Y location of the sensor head via G0 or G1 command, issue a pause to allow the motion to settle down and send the sample trigger. Aux 0 is used to trigger a sample. 
+```
+G1 X<X_location>Y<Y_location> ; drive machine to sample location
+G04 P1    ; pause 1 second*
+M64 P0    ; trigger sample
+G04 P0.4  ; pause 400 mS
+M65 P0    ; turn off trigger
+```
+
+To support building spreadsheets, Aux 1 is used to indicate the start or end of a line of samples, cooresponding to a set of samples with the same X (or Y) coordinates. Take care to insert some pause time between an on and off action.
+```
+G1 X<nnn>Y<mmm>
+G04 P1    ; pause for 1 second
+M64 P0    ; trigger sample
+G04 P0.4  ; pause 400 mS
+M65 P0    ; turn off trigger
+M65 P1    ; end of a line, turn line trigger off
+G04 P0.4  ; pause 400 mS
+
+; next row
+M64 P1    ; start of a new line, turn trigger on
+G1 X<sss>Y<ttt>
+G04 P1    ; pause 1 second
+M64 P0    ; trigger sample
+G04 P0.4  ; pause 400 mS
+M65 P0    ; turn off trigger
+```
+
+The third trigger is to support header and footer in the stream of data from the sensor head via Aux 2. At the start of a sampling session, raise Aux 2 (M64 P2) and some header text will be inserted in the sample stream. Lower it at the end of the session (M65 P2) and footer text will be inserted in the output stream.
+
+Rotation of the Z axis can be inserted into your GCode where ever drive the machine to a smapling location.
+
+### Compatible GCode Senders
+Due to the nature of the how Grbl based motion controllers, the GCode Sender that feeds GCode to them needs to operate synchronously.  This means it needs to send each command when the previous one has completed.  It is common for GCode Senders to send many commands to the motion controller ahead of the actual motion.  This will disrupt timing of the trigger signals.  Currently we recommendusing ioSender from IO Engineering. [It is available from github](https://github.com/terjeio/ioSender/releases/tag/2.0.46).
