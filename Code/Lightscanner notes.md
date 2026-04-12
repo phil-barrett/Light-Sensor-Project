@@ -143,5 +143,7 @@ The third trigger is to support header and footer in the stream of data from the
 
 Rotation of the Z axis can be inserted into your GCode where ever drive the machine to a smapling location.
 
+For more information, take a look at this [example GCode program](https://github.com/phil-barrett/Light-Sensor-Project/blob/main/Examples/gcode_test.gcode).
+
 ### Compatible GCode Senders
 Due to the nature of the how Grbl based motion controllers, the GCode Sender that feeds GCode to them needs to operate synchronously.  This means it needs to send each command when the previous one has completed.  It is common for GCode Senders to send many commands to the motion controller ahead of the actual motion.  This will disrupt timing of the trigger signals.  Currently we recommendusing ioSender from IO Engineering. [It is available from github](https://github.com/terjeio/ioSender/releases/tag/2.0.46).
