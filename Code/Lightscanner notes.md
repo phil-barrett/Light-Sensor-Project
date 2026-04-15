@@ -13,9 +13,9 @@ The current setup
 ![Wiring Diagram](https://github.com/phil-barrett/Light-Sensor-Project/blob/main/Images/wiring%20diagram.png)
 
 ### Wiring
-Using QWIIC for wiring is fairly simple.  Use a short cabe to connect the two sensor boards together. Use a short cable between the LCD and Pico/Pico Booster.  Use a longer cable between the sensor assembly and the Pico/LCD to account for the rotation of the scan head. QWIIC (Sparkfun) and STEMMA (Adafruit) are interchangable i2c connection standards.  They work quite well.
+Using QWIIC for wiring is fairly simple.  Use a short cabe to connect the two sensor boards together. Use a short cable between the LCD and Pico/Pico Booster.  Use a longer cable between the sensor assembly and the Pico/LCD to account for the rotation of the scan head. QWIIC (Sparkfun) and STEMMA (Adafruit) are interchangable i2c connection standards.  They work quite well. QWIIC cables can be purchased from a number of sources including SparkFun, AdaFruit, Amazon and AliExpress.
 
-Three trigger inputs from the motion controller are used to drive the actions of the Lightscanner software. This requires 3 wires plus a ground wire between the Pico/PicoBooster and the motion controller.  The motion controller uses 5V logic output and the Pico uses 3.3 volts so voltage translation is needs.  The Pico Booster provides that function.  I recommend multiconductor 22 gauge wire. See trigger mode discussions below got more details on triggering.
+Three trigger inputs from the motion controller are used to drive the actions of the Lightscanner software. This requires 3 wires plus a ground wire between the Pico/PicoBooster and the motion controller.  The motion controller uses 5V logic output and the Pico uses 3.3 volts so voltage translation is needs.  The Pico Booster provides that function.  I recommend multiconductor 22 gauge wire with ferrules. See trigger mode discussions below got more details on triggering.
 
 ### LCD Display
 Requires a 128x64 monochrome display with an I2C interface. These are plentiful and inexpensive. Typically called 1.3" OLED LCD or similar.  Also available in 0.9" and 1.5" sizes. The Sparkfun 1.3" OLED QWIIC LCD works quite well.
