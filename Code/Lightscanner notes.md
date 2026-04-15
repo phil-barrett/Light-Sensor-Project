@@ -136,35 +136,35 @@ GCode programs are simply text documents that the motion controller will run.
 
 For each sample location, the GCode program needs to move the X/Y location of the sensor head via G0 or G1 command, issue a pause to allow the motion to settle down and send the sample trigger. Aux 0 is used to trigger a sample. 
 ```
-G1 X<X_location>Y<Y_location> ; drive machine to sample location
-G04 P1    ; pause 1 second*
-M64 P0    ; trigger sample
+G1 X<X_location>Y<Y_location>Z<rotation> ; drive machine to sample location
+G04 P1    ; pause 1 second (setting time empirically determined)
+M64 P0    ; trigger sample via Aux0
 G04 P0.4  ; pause 400 mS
 M65 P0    ; turn off trigger
 ```
 
-To support building spreadsheets, Aux 1 is used to indicate the start or end of a line of samples, cooresponding to a set of samples with the same X (or Y) coordinates. Take care to insert some pause time between an on and off action.
+To support building spreadsheets, Aux 1 is used to indicate the start or end of a row of samples, cooresponding to a set of samples with the same X (or Y) coordinates. Take care to insert some pause time between an on and off action.
 ```
-G1 X<nnn>Y<mmm>
+G1 X<nnn>Y<mmm>Z<rrr>    ; move to last column location
 G04 P1    ; pause for 1 second
-M64 P0    ; trigger sample
+M64 P0    ; trigger sample via Aux 0
 G04 P0.4  ; pause 400 mS
 M65 P0    ; turn off trigger
-M65 P1    ; end of a line, turn line trigger off
+M65 P1    ; end of a line, turn line trigger off via Aux 1
 G04 P0.4  ; pause 400 mS
 
 ; next row
-M64 P1    ; start of a new line, turn trigger on
-G1 X<sss>Y<ttt>
-G04 P1    ; pause 1 second
+M64 P1    ; start of a new line, turn trigger on via Aux 1
+G1 X<sss>Y<ttt>Z<uuu>    ; move to next row, first column location
+G04 P1    ; pause 1 second via Aux 0
 M64 P0    ; trigger sample
 G04 P0.4  ; pause 400 mS
-M65 P0    ; turn off trigger
+M65 P0    ; turn off trigger via Aux 0
 ```
 
 The third trigger is to support header and footer in the stream of data from the sensor head via Aux 2. At the start of a sampling session, raise Aux 2 (M64 P2) and some header text will be inserted in the sample stream. Lower it at the end of the session (M65 P2) and footer text will be inserted in the output stream.
 
-Rotation of the Z axis can be inserted into your GCode where ever drive the machine to a smapling location.
+Rotation of the Z axis can be inserted into your GCode when you the machine to a smapling location. The actual rotation value depnds on the location within the scan grid.
 
 For more information, take a look at this [example GCode program](https://github.com/phil-barrett/Light-Sensor-Project/blob/main/Examples/gcode_test.gcode).
 
