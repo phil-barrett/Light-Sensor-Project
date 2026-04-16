@@ -5,7 +5,7 @@ Current Software Version: 0.78
 The current setup 
 - AS7343 spectral sensor.  Connect via i2C.  Currently using a QWIIC based one from Adafruit.
 - AS7331 Spectral UV sensor.  Connect via i2c.  Currently using Adafruit QWIIC based one.
-- Small 128x64 OLED LCD. Connect via i2c. Currently using Sparkfun 1.3" OLED QWIIC LCD. See discussion below on verious models supported.
+- Small 128x64 OLED LCD. Connect via i2c. Currently using Sparkfun 1.3" OLED QWIIC LCD. See discussion below on various models supported.
 - Raspberry PI Pico microcontroller. Both original Pico and Pico 2 work fine.
 - Voltage translation and QWIIC connector.  Using open source Pico Booster.
 - A grblHAL based motion controller. Currently using Brookwood Design RP23U5XBB.  Any motion controller that supports 3 digital outputs is aceptable. 
@@ -18,7 +18,7 @@ Using QWIIC for wiring is fairly simple.  Use a short cabe to connect the two se
 Three trigger inputs from the motion controller are used to drive the actions of the Lightscanner software. This requires 3 wires plus a ground wire between the Pico/PicoBooster and the motion controller.  The motion controller uses 5V logic output and the Pico uses 3.3 volts so voltage translation is needs.  The Pico Booster provides that function.  I recommend multiconductor 22 gauge wire with ferrules. See trigger mode discussions below got more details on triggering.
 
 ### LCD Display
-Requires a 128x64 monochrome display with an I2C interface. These are plentiful and inexpensive. Typically called 1.3" OLED LCD or similar.  Also available in 0.9" and 1.5" sizes. The Sparkfun 1.3" OLED QWIIC LCD works quite well.
+Requires a 128x64 monochrome display with an I2C interface. These are plentiful and inexpensive. Typically called 1.3" OLED LCD or similar.  Also available in 0.9" and 1.5" sizes. The Sparkfun 1.3" OLED QWIIC LCD works quite well. The scan head model is designed the SF display.
 
 #### Changing graphics controller
 Uses the graphics package u8g2 which supports both SH1106 and SSD1306 controller chips. To use either one, uncomment the appropriate line at approximately lines 14-15.
